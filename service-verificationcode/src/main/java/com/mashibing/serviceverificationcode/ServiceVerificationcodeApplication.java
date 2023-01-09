@@ -9,7 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 public class ServiceVerificationcodeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ServiceVerificationcodeApplication.class, args);
+		SpringApplication.run(ServiceVerificationcodeApplication.class);
 	}
 
 }
