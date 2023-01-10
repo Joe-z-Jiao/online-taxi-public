@@ -1,8 +1,10 @@
 package com.mashibing.apipassenger.service;
 
+import com.mashibing.apipassenger.remote.ServicePassengerUserClient;
 import com.mashibing.apipassenger.remote.ServiceVerificationCodeClient;
 import com.mashibing.internalcommon.constant.CommonStatusEnum;
 import com.mashibing.internalcommon.dto.ResponseResult;
+import com.mashibing.internalcommon.request.VerificationCodeDTO;
 import com.mashibing.internalcommon.response.NumberCodeResponse;
 import com.mashibing.internalcommon.response.TokenResponse;
 import net.sf.json.JSONObject;
@@ -18,6 +20,8 @@ public class VerificationCodeService  {
     @Autowired
     private ServiceVerificationCodeClient serviceVerificationCodeClient;
 
+    @Autowired
+    private ServicePassengerUserClient servicePassengerUserClient;
     //key 值前缀
     private String verificationCodePrefix = "passenger-verification-code-";
 
@@ -55,6 +59,7 @@ public class VerificationCodeService  {
      * @return
      */
     public ResponseResult checkCode(String passengerPhone,String verificationCode){
+
         //去redis里面获取手机号和验证码
         //生成key
         String key = generatorKeyByPhone(passengerPhone);
@@ -70,10 +75,10 @@ public class VerificationCodeService  {
             return ResponseResult.fail(CommonStatusEnum.VERIFICATION_CODE_ERROR.getCode(),CommonStatusEnum.VERIFICATION_CODE_ERROR.getValue());
 
         }
-
-
-        System.out.println("校验手机号和验证码是否匹配");
-        System.out.println("判断原来是否有这个用户，并做后续处理");
+        //判断原来是否有这个用户，并做后续处理
+        VerificationCodeDTO verificationCodeDTO = new VerificationCodeDTO();
+        verificationCodeDTO.setPassengerPhone(passengerPhone);
+        servicePassengerUserClient.loginOrRegister(verificationCodeDTO);
         System.out.println("颁发令牌");
 
         //响应
