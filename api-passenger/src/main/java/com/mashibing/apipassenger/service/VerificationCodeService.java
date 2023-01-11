@@ -83,12 +83,12 @@ public class VerificationCodeService  {
         servicePassengerUserClient.loginOrRegister(verificationCodeDTO);
 
         //颁发令牌,identity 不应该写死，用常量
-        JwtUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
+        String token = JwtUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
 
 
         //响应
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken("Token Str");
+        tokenResponse.setToken(token);
         return ResponseResult.success(tokenResponse);
     }
 }
