@@ -48,8 +48,8 @@ public class JwtUtils {
 
     public static TokenResult parseToken(String token){
         DecodedJWT verify = JWT.require(Algorithm.HMAC256(saults)).build().verify(token);
-        String passengerPhone = verify.getClaim(JWT_KEY_PHONE).toString();
-        String identity = verify.getClaim(JWT_KEY_IDENTITY).toString();
+        String passengerPhone = verify.getClaim(JWT_KEY_PHONE).asString();
+        String identity = verify.getClaim(JWT_KEY_IDENTITY).asString();
         TokenResult tokenResult = new TokenResult();
         tokenResult.setPassengerPhone(passengerPhone);
         tokenResult.setIdentity(identity);
