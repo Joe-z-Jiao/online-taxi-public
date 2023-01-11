@@ -2,6 +2,7 @@ package com.mashibing.apipassenger.interceptor;
 
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.mashibing.internalcommon.constant.TokenConstants;
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.dto.TokenResult;
 import com.mashibing.internalcommon.utils.JwtUtils;
@@ -53,7 +54,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             //获取拼接key
             String identity = tokenResult.getIdentity();
             String passengerPhone = tokenResult.getPassengerPhone();
-            String tokenKey = RedisKeyPrefixUtils.generotorTokenKey(passengerPhone, identity);
+            String tokenKey = RedisKeyPrefixUtils.generotorTokenKey(passengerPhone, identity, TokenConstants.Access_TOKEN_TYPE);
             //从 redis 中获取 token
             String tokenRedis = stringRedisTemplate.opsForValue().get(tokenKey);
             //校验 redis 中的 token 是否与 token 一致
