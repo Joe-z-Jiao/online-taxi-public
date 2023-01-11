@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.mashibing.internalcommon.dto.TokenResult;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,11 +17,14 @@ public class JwtUtils {
     //盐
     private static final String saults = "!@!#SDasdd4";
 
-    private static final String Jwt_Key = "passengerPhone";
+    private static final String JWT_KEY_PHONE = "passengerPhone";
 
-    private static String generatorToken(String passengerPhone){
+    private static final String JWT_KEY_IDENTITY = "identity";
+
+    public static String generatorToken(String passengerPhone,String identity){
         Map<String,String> map = new HashMap<>();
-        map.put(Jwt_Key,passengerPhone);
+        map.put(JWT_KEY_PHONE,passengerPhone);
+        map.put(JWT_KEY_IDENTITY,identity);
         //token 过期时间
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE,1);
@@ -42,17 +46,21 @@ public class JwtUtils {
         return sign;
     }
 
-    private static String parseToken(String token){
+    public static TokenResult parseToken(String token){
         DecodedJWT verify = JWT.require(Algorithm.HMAC256(saults)).build().verify(token);
-        Claim claim = verify.getClaim(Jwt_Key);
-        return claim.toString();
+        String passengerPhone = verify.getClaim(JWT_KEY_PHONE).toString();
+        String identity = verify.getClaim(JWT_KEY_IDENTITY).toString();
+        TokenResult tokenResult = new TokenResult();
+        tokenResult.setPassengerPhone(passengerPhone);
+        tokenResult.setIdentity(identity);
+        return tokenResult;
     }
 
     public static void main(String[] args) {
-        String s = generatorToken("17861403227");
+        String s = generatorToken("17861403227","1");
         System.out.println("生成的 token 为： "+s);
 
-        String s1 = parseToken(s);
-        System.out.println("解析的数据:" + s1);
+        TokenResult tokenResult = parseToken(s);
+        System.out.println("解析的手机号为:" + tokenResult.getPassengerPhone() + "解析的身份认证为：" + tokenResult.getIdentity());
     }
 }
