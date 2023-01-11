@@ -12,6 +12,7 @@ import com.mashibing.internalcommon.utils.JwtUtils;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,12 @@ public class VerificationCodeService  {
 
     @Autowired
     private ServicePassengerUserClient servicePassengerUserClient;
-    //key 值前缀
+
+    //验证码 key 前缀
     private String verificationCodePrefix = "passenger-verification-code-";
+
+    //token key 前缀
+    private String tokenPrefix = "token-";
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -52,6 +57,16 @@ public class VerificationCodeService  {
      */
     private String generatorKeyByPhone(String phoneNum){
         return verificationCodePrefix + phoneNum;
+    }
+
+    /**
+     * 根据手机号和身份标识生成token key
+     * @param passengerPhone
+     * @param identity
+     * @return
+     */
+    private String generotorTokenKey(String passengerPhone,String identity) {
+        return tokenPrefix + passengerPhone + "-" + identity;
     }
 
     /**
@@ -82,9 +97,12 @@ public class VerificationCodeService  {
         verificationCodeDTO.setPassengerPhone(passengerPhone);
         servicePassengerUserClient.loginOrRegister(verificationCodeDTO);
 
-        //颁发令牌,identity 不应该写死，用常量
+        //颁发令牌,identity 不应该魔法值，用常量
         String token = JwtUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
 
+        //将token放到redis中
+        String tokenKey = generotorTokenKey(passengerPhone, IdentityConstant.PASSENGER_IDENTITY);
+        stringRedisTemplate.opsForValue().set(tokenKey,token,30,TimeUnit.DAYS);
 
         //响应
         TokenResponse tokenResponse = new TokenResponse();

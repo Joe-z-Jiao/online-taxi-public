@@ -38,7 +38,7 @@ public class JwtUtils {
         });
 
         //整合过期时间
-        builder.withExpiresAt(date);
+//        builder.withExpiresAt(date);
 
         //加盐
         String sign = builder.sign(Algorithm.HMAC256(saults));
