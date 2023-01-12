@@ -18,6 +18,7 @@
         <module>service-verificationcode</module>
         <module>internal-common</module>
         <module>service-passenger-user</module>
+        <module>service-price</module>
     </modules>
     <packaging>pom</packaging>
 
