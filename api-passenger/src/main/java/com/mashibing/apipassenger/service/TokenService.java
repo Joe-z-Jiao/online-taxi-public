@@ -21,7 +21,7 @@ public class TokenService {
     public ResponseResult refreshToken(String refreTokenSrc) {
        
         //解析 refreshToken
-        TokenResult tokenResult = JwtUtils.parseToken(refreTokenSrc);
+        TokenResult tokenResult = JwtUtils.checkToken(refreTokenSrc);
         if (tokenResult == null) {
             return ResponseResult.fail(CommonStatusEnum.TOKEN_ERROR.getCode(),CommonStatusEnum.TOKEN_ERROR.getValue());
         }
