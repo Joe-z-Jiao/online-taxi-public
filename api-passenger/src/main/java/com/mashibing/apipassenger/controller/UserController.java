@@ -17,9 +17,7 @@ public class UserController {
     @GetMapping("users")
     public ResponseResult getUser(HttpServletRequest request){
 
-        //获取到access Token
 
-        //根据 access Token查询
         ResponseResult user = userService.getUser(request.getHeader("Authorization"));
 
 
