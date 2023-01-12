@@ -3,6 +3,8 @@ package com.mashibing.internalcommon.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.mashibing.internalcommon.dto.TokenResult;
@@ -57,6 +59,20 @@ public class JwtUtils {
         tokenResult.setPassengerPhone(passengerPhone);
         tokenResult.setIdentity(identity);
         return tokenResult;
+    }
+
+    /**
+     * 校验 Token 是否正确
+     * @param token
+     * @return
+     */
+    public static TokenResult checkToken(String token){
+        TokenResult tokenResult = null;
+        try {
+            tokenResult = JwtUtils.parseToken(token);
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public static void main(String[] args) {
