@@ -1,4 +1,4 @@
-package com.mashibing.remote;
+package com.mashibing.serviceprice.remote;
 
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.request.ForceCastPriceDTO;

@@ -1,8 +1,8 @@
-package com.mashibing.controller;
+package com.mashibing.serviceprice.controller;
 
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.request.ForceCastPriceDTO;
-import com.mashibing.serviceprice.ForceCastPriceService;
+import com.mashibing.serviceprice.service.ForceCastPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

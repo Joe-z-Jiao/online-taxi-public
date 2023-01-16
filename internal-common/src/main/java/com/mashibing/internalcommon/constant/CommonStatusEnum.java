@@ -8,6 +8,8 @@ public enum CommonStatusEnum {
 
     USER_NOT_EXISTS(1200,"用户不存在"),
 
+    PRICE_RULE_EMPTY(1300,"计价规则不存在"),
+
     TOKEN_ERROR(1199,"token 错误"),
     SUCCESS(1,"SUCCESS"),
     FAIL(0,"FAIL ")
