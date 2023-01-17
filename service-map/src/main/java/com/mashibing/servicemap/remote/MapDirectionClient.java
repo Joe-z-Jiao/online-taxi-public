@@ -66,16 +66,17 @@ public class MapDirectionClient {
                         JSONObject pathObject = pathArray.getJSONObject(0);
                         directionResponse = new DirectionResponse();
                         if (pathObject.has(AmapConfigConstants.DISTANCE)) {
-                            directionResponse.setDistance(pathObject.getInt(AmapConfigConstants.DISTANCE));
+                            int distance = pathObject.getInt(AmapConfigConstants.DISTANCE);
+                            directionResponse.setDistance(distance);
                         }
                         if (pathObject.has(AmapConfigConstants.DURATION)) {
-                            directionResponse.setDuration(pathObject.getInt(AmapConfigConstants.DURATION));
+                            int duration = pathObject.getInt(AmapConfigConstants.DURATION);
+                            directionResponse.setDuration(duration);
                         }
                     }
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
         }
 
         return directionResponse;
