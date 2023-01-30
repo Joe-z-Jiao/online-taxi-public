@@ -14,7 +14,7 @@ public class DistrictController {
 
     @GetMapping("dic-district")
     public ResponseResult initDicDistrict(String keywords){
-        return dicDistrictService.initDicDistict(keywords);
+        return dicDistrictService.initDicDistrict(keywords);
 
     }
 }
