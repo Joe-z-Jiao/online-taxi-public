@@ -10,6 +10,8 @@ public enum CommonStatusEnum {
 
     PRICE_RULE_EMPTY(1300,"计价规则不存在"),
 
+    MAP_DICDISTRICT_ERROR(1400,"请求地图错误"),
+
     TOKEN_ERROR(1199,"token 错误"),
     SUCCESS(1,"SUCCESS"),
     FAIL(0,"FAIL ")
