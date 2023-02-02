@@ -5,6 +5,7 @@ import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.serviceDriverUser.service.DriverUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,13 @@ public class UserController {
     DriverUserService driverUserService;
 
     @PostMapping("/user")
-    public ResponseResult addUer(@RequestBody DriverUser driverUser){
+    public ResponseResult addUer(@RequestBody DriverUser driverUser) {
         return driverUserService.addUser(driverUser);
+    }
+
+
+    @PutMapping("/user")
+    public ResponseResult updateUser(@RequestBody DriverUser driverUser) {
+        return driverUserService.updateUser(driverUser);
     }
 }
