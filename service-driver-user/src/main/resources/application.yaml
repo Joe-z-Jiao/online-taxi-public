@@ -1,0 +1,10 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/service-driver-user?characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: 95uoh16j
+  application:
+    name: service-driver-user
