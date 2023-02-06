@@ -22,6 +22,7 @@
         <module>service-map</module>
         <module>service-driver-user</module>
         <module>api-boss</module>
+        <module>api-driver</module>
     </modules>
     <packaging>pom</packaging>
 
