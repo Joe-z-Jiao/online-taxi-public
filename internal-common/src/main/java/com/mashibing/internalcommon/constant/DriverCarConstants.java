@@ -10,4 +10,14 @@ public class DriverCarConstants {
      * 司机与车辆解绑
      */
     public static int DRIVER_CAR_UNBIND = 2;
+
+    /**
+     * 司机状态 1：有效
+     */
+    public static int DRIVER_STATE_VALID = 1;
+
+    /**
+     * 司机状态 2：无效
+     */
+    public static int DRIVER_STATE_INVALID = 0;
 }
