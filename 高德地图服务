@@ -1,0 +1,40 @@
+服务管理
+{
+    "data": {
+        "name": "飞滴出行service",
+        "sid": 879518
+    },
+    "errcode": 10000,
+    "errdetail": null,
+    "errmsg": "OK"
+}
+
+创建终端
+{
+    "data": {
+        "name": "车辆1",
+        "tid": 631863408,
+        "sid": 879518
+    },
+    "errcode": 10000,
+    "errdetail": null,
+    "errmsg": "OK"
+}
+
+查询终端
+{
+    "data": {
+        "count": 1,
+        "results": [
+            {
+                "createtime": 1675836782072,
+                "locatetime": 0,
+                "name": "车辆1",
+                "tid": 631863408
+            }
+        ]
+    },
+    "errcode": 10000,
+    "errdetail": null,
+    "errmsg": "OK"
+}
