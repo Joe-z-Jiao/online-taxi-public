@@ -40,7 +40,7 @@ public class VerificationCodeService  {
         ResponseResult<NumberCodeResponse> numberCodeResponse = serviceVerificationCodeClient.getNumberCode(6);
         int numberCode = numberCodeResponse.getData().getNumberCode();
 
-        String key = RedisKeyPrefixUtils.generatorKeyByPhone(phoneNum);
+        String key = RedisKeyPrefixUtils.generatorKeyByPhone(phoneNum,IdentityConstant.PASSENGER_IDENTITY);
         //存入redis中
         stringRedisTemplate.opsForValue().set(key,numberCode+"",2, TimeUnit.MINUTES);
         return ResponseResult.success("");
@@ -58,7 +58,7 @@ public class VerificationCodeService  {
 
         //去redis里面获取手机号和验证码
         //生成key
-        String key = RedisKeyPrefixUtils.generatorKeyByPhone(passengerPhone);
+        String key = RedisKeyPrefixUtils.generatorKeyByPhone(passengerPhone,IdentityConstant.PASSENGER_IDENTITY);
         String redisCode = stringRedisTemplate.opsForValue().get(key);
         System.out.println("通过redis获取到的key" + redisCode);
 
