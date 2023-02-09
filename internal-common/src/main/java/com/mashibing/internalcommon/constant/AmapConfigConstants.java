@@ -24,6 +24,12 @@ public class AmapConfigConstants {
      * 创建终端
      */
     public static final String TERMINAL_ADD = "https://tsapi.amap.com/v1/track/terminal/add";
+
+    /**
+     * 创建轨迹
+     */
+    public static final String TRACK_ADD = "https://tsapi.amap.com/v1/track/trace/add";
+
     /**
      * json key值
      */
