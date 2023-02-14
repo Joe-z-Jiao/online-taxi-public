@@ -26,6 +26,10 @@ public class AmapConfigConstants {
     public static final String TERMINAL_ADD = "https://tsapi.amap.com/v1/track/terminal/add";
 
     /**
+     * 轨迹点的上传
+     */
+    public static final String POINT_UPLOAD = "https://tsapi.amap.com/v1/track/point/upload";
+    /**
      * 创建轨迹
      */
     public static final String TRACK_ADD = "https://tsapi.amap.com/v1/track/trace/add";
