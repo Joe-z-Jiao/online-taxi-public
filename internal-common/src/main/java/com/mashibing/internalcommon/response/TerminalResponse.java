@@ -6,4 +6,6 @@ import lombok.Data;
 public class TerminalResponse {
 
     private String tid;
+
+    private Long carId;
 }

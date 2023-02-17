@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Service
 public class TerminalService {
     @Autowired
@@ -14,5 +16,10 @@ public class TerminalService {
 
     public ResponseResult<TerminalResponse> add(String name,String desc) {
         return terminaClient.add(name,desc);
+    }
+
+    public ResponseResult<List<TerminalResponse>> aroundSearch(String center, Integer radius){
+
+        return terminaClient.aroundsearch(center,radius);
     }
 }
