@@ -12,7 +12,7 @@ public class TerminalService {
     @Autowired
     private TerminaClient terminaClient;
 
-    public ResponseResult<TerminalResponse> add(String name) {
-        return terminaClient.add(name);
+    public ResponseResult<TerminalResponse> add(String name,String desc) {
+        return terminaClient.add(name,desc);
     }
 }

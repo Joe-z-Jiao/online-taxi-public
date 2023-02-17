@@ -22,7 +22,7 @@ public class TerminaClient {
     @Autowired
     private RestTemplate restTemplate;
 
-    public ResponseResult<TerminalResponse> add(String name){
+    public ResponseResult<TerminalResponse> add(String name,String desc){
         StringBuilder url = new StringBuilder();
         url.append(AmapConfigConstants.TERMINAL_ADD);
         url.append("?");
@@ -31,8 +31,11 @@ public class TerminaClient {
         url.append("sid=" + amapSid);
         url.append("&");
         url.append("name=" + name);
-
+        url.append("&");
+        url.append("desc=" + desc);
+        System.out.println("创建终端请求:" + url.toString());
         ResponseEntity<String> forEntity = restTemplate.postForEntity(url.toString(), null, String.class);
+        System.out.println("创建终端响应：" + forEntity.getBody());
         String body = forEntity.getBody();
         JSONObject jsonObject = JSONObject.fromObject(body);
         JSONObject data = jsonObject.getJSONObject("data");
