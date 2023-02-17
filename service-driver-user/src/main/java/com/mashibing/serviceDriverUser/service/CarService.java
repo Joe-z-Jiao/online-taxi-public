@@ -23,13 +23,14 @@ public class CarService {
     @Autowired
     ServiceMapClient serviceMapClient;
 
-    public ResponseResult addCar(Car car){
+    public ResponseResult addCar(Car car) {
         LocalDateTime now = LocalDateTime.now();
         car.setGmtCreate(now);
         car.setGmtModified(now);
-
+//保存车辆
+        carMapper.insert(car);
         //获得此车辆对应的 tid
-        ResponseResult<TerminalResponse> result = serviceMapClient.addTerminal(car.getVehicleNo());
+        ResponseResult<TerminalResponse> result = serviceMapClient.addTerminal(car.getVehicleNo(), car.getId() + "");
         String tid = result.getData().getTid();
         car.setTid(tid);
 
@@ -39,15 +40,15 @@ public class CarService {
         String trackId = data.getTrackId();
         String trackName = data.getTrackName();
         car.setTrid(trackId);
-        car.setTrname(trackName) ;
+        car.setTrname(trackName);
 
-        carMapper.insert(car);
+        carMapper.updateById(car);
         return ResponseResult.success("");
     }
 
-    public ResponseResult<Car> getCar(Long id){
-        Map<String,Object> map = new HashMap<>();
-        map.put("id",id);
+    public ResponseResult<Car> getCar(Long id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
         List<Car> cars = carMapper.selectByMap(map);
         return ResponseResult.success(cars.get(0));
     }
