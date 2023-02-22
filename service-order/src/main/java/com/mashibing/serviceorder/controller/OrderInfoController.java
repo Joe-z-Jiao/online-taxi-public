@@ -1,10 +1,12 @@
 package com.mashibing.serviceorder.controller;
 
 
+import com.mashibing.internalcommon.dto.OrderInfo;
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.request.OrderRequest;
 import com.mashibing.serviceorder.service.OrderInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +32,7 @@ public class OrderInfoController {
 
     @RequestMapping("/add")
     public ResponseResult add(@RequestBody OrderRequest orderRequest) {
-        log.info("service-order" + orderRequest.getAddress());
-        return null;
+        return orderInfoService.add(orderRequest);
     }
 
 
