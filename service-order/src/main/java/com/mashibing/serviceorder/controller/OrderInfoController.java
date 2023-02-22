@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Slf4j
-@RequestMapping("/order-info")
+@RequestMapping("/order")
 public class OrderInfoController {
 
     @Autowired

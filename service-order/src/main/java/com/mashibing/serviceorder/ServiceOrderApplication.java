@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-@MapperScan("")
+@MapperScan("com.mashibing.serviceorder.mapper")
 public class ServiceOrderApplication {
 
     public static void main(String[] args) {
