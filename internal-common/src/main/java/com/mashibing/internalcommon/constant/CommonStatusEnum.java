@@ -10,6 +10,10 @@ public enum CommonStatusEnum {
 
     PRICE_RULE_EMPTY(1300,"计价规则不存在"),
 
+    PRICE_RULE_EXISTS(1301,"计价规则已存在，不允许添加"),
+
+    PRICE_RULE_NOT_EDITS(1302,"计价规则没有变化"),
+
     MAP_DICDISTRICT_ERROR(1400,"请求地图错误"),
 
     DRIVER_CAR_BIND_NOT_EXISTS(1500,"司机和车辆绑定关系不存在"),
