@@ -38,9 +38,13 @@ public class PriceRuleController {
         return priceRuleService.getNewestVersion(fareType);
     }
 
-
     @GetMapping("/is-new")
     public ResponseResult<Boolean> isNew(@RequestParam String fareType,@RequestParam Integer fareVersion){
         return priceRuleService.isNew(fareType,fareVersion);
+    }
+
+    @GetMapping("/if-exists")
+    public ResponseResult<Boolean> ifExists(@RequestBody PriceRule priceRule) {
+        return priceRuleService.ifExists(priceRule);
     }
 }
