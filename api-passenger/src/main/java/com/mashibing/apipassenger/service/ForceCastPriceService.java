@@ -15,7 +15,7 @@ public class ForceCastPriceService {
     @Autowired
     private ServicePriceClient servicePriceClient;
 
-    public ResponseResult forceCastPrice(String depLongitude, String depLatitude, String destLongitude, String destLatitude) {
+    public ResponseResult forceCastPrice(String depLongitude, String depLatitude, String destLongitude, String destLatitude,String cityCode,String vehicleType) {
 
         log.info("出发地精度："+ depLongitude);
         log.info("出发地纬度："+ depLatitude);
@@ -27,11 +27,15 @@ public class ForceCastPriceService {
         forceCastPriceDTO.setDepLatitude(depLatitude);
         forceCastPriceDTO.setDestLongitude(destLongitude);
         forceCastPriceDTO.setDestLatitude(destLatitude);
+        forceCastPriceDTO.setCityCode(cityCode);
+        forceCastPriceDTO.setVehicleType(vehicleType);
         ResponseResult<ForceCastPriceResponse> forecast = servicePriceClient.forecast(forceCastPriceDTO);
         double price = forecast.getData().getPrice();
         //调用计价服务，计算价格
         ForceCastPriceResponse forceCastPriceResponse = new ForceCastPriceResponse();
         forceCastPriceResponse.setPrice(price);
+        forceCastPriceResponse.setCityCode(cityCode);
+        forceCastPriceResponse.setVehicleType(vehicleType);
         return ResponseResult.success(forceCastPriceResponse);
     }
 }

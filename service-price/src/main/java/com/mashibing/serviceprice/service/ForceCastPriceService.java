@@ -1,5 +1,6 @@
 package com.mashibing.serviceprice.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashibing.internalcommon.constant.CommonStatusEnum;
 import com.mashibing.internalcommon.dto.PriceRule;
@@ -29,7 +30,9 @@ public class ForceCastPriceService {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    public ResponseResult forceCastPrice(String depLongitude, String depLatitude, String destLongitude, String destLatitude) {
+    public ResponseResult forceCastPrice(String depLongitude, String depLatitude,
+                                         String destLongitude, String destLatitude,
+                                         String cityCode, String vehicleType) {
 
         log.info("出发地精度：" + depLongitude);
         log.info("出发地纬度：" + depLatitude);
@@ -50,10 +53,16 @@ public class ForceCastPriceService {
         log.info("duration:" + duration);
 
         //读取计价规则
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("city_code", "110000");
-        map.put("vehicle_type", "1");
-        List<PriceRule> priceResults = priceRuleMapper.selectByMap(map);
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("city_code", cityCode);
+//        map.put("vehicle_type", vehicleType);
+
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("city_code", cityCode);
+        queryWrapper.eq("vehicle_type", vehicleType);
+        queryWrapper.orderByDesc("fare_version");
+
+        List<PriceRule> priceResults = priceRuleMapper.selectList(queryWrapper);
         if (priceResults.size() == 0) {
             return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_EMPTY.getCode(), CommonStatusEnum.PRICE_RULE_EMPTY.getValue());
         }
@@ -64,6 +73,8 @@ public class ForceCastPriceService {
 
         ForceCastPriceResponse forceCastPriceResponse = new ForceCastPriceResponse();
         forceCastPriceResponse.setPrice(price);
+        forceCastPriceResponse.setCityCode(cityCode);
+        forceCastPriceResponse.setVehicleType(vehicleType);
         return ResponseResult.success(forceCastPriceResponse);
     }
 

@@ -21,8 +21,10 @@ public class ServicePriceController {
         String depLatitude = forceCastPriceDTO.getDepLatitude();
         String destLongitude = forceCastPriceDTO.getDestLongitude();
         String destLatitude = forceCastPriceDTO.getDestLatitude();
+        String cityCode = forceCastPriceDTO.getCityCode();
+        String vehicleType = forceCastPriceDTO.getVehicleType();
 
-        ResponseResult result = forceCastPriceService.forceCastPrice(depLongitude, depLatitude, destLongitude, destLatitude);
+        ResponseResult result = forceCastPriceService.forceCastPrice(depLongitude, depLatitude, destLongitude, destLatitude,cityCode,vehicleType);
 
         return result;
     }
