@@ -33,6 +33,8 @@ public enum CommonStatusEnum {
     ORDER_GOING_ON(1600,"有正在进行的订单"),
 
     DEVICE_IS_BLACK(1601,"该设备超过下单次数"),
+
+    CITY_SERVICE_NOT_SERVICE(1602,"当前城市不提供叫车服务"),
     SUCCESS(1,"SUCCESS"),
     FAIL(0,"FAIL ")
     ;

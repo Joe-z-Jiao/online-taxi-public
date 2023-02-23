@@ -43,7 +43,7 @@ public class PriceRuleController {
         return priceRuleService.isNew(fareType,fareVersion);
     }
 
-    @GetMapping("/if-exists")
+    @PostMapping ("/if-exists")
     public ResponseResult<Boolean> ifExists(@RequestBody PriceRule priceRule) {
         return priceRuleService.ifExists(priceRule);
     }
