@@ -14,6 +14,8 @@ public enum CommonStatusEnum {
 
     PRICE_RULE_NOT_EDITS(1302,"计价规则没有变化"),
 
+    PRICE_RULE_CHANGED(1303,"计价规则有变化"),
+
     MAP_DICDISTRICT_ERROR(1400,"请求地图错误"),
 
     DRIVER_CAR_BIND_NOT_EXISTS(1500,"司机和车辆绑定关系不存在"),
