@@ -27,7 +27,7 @@ public class TestController {
     public DriverUserMapper driverUserMapper;
     @GetMapping("/test-xml")
     public int testXml(String cityCode){
-        int i = driverUserMapper.select1(cityCode);
+        int i = driverUserMapper.selectDriverUserCountByCityCode(cityCode);
         return i;
     }
 }

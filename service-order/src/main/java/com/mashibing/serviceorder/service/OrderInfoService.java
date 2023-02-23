@@ -11,6 +11,8 @@ import com.mashibing.internalcommon.request.OrderRequest;
 import com.mashibing.internalcommon.utils.RedisKeyPrefixUtils;
 import com.mashibing.serviceorder.mapper.OrderInfoMapper;
 import com.mashibing.serviceorder.remote.ServicePriceClient;
+import com.mashibing.serviceorder.remote.ServiceDriverUserClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2023-02-20
  */
 @Service
+@Slf4j
 public class OrderInfoService {
 
     @Autowired
@@ -39,7 +42,17 @@ public class OrderInfoService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private ServiceDriverUserClient serviceDriverUserClient;
+
     public ResponseResult add(OrderRequest orderRequest) {
+        //测试当前城市是否有司机
+        ResponseResult<Boolean> availableDriver = serviceDriverUserClient.isAvailableDriver(orderRequest.getAddress());
+        log.info("测试城市是否有司机结果：" + availableDriver.getData() );
+        if (!availableDriver.getData()) {
+            return ResponseResult.fail(CommonStatusEnum.CITY_DRIVER_EMPTY.getCode(),CommonStatusEnum.CITY_DRIVER_EMPTY.getValue(),"");
+        }
+
         //判断计价版本规则是否为最新
         ResponseResult<Boolean> aNew = servicePriceClient.isNew(orderRequest.getFareType(), orderRequest.getFareVersion());
         if (!(aNew.getData())) {

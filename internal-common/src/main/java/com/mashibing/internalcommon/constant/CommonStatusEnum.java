@@ -28,6 +28,8 @@ public enum CommonStatusEnum {
 
     CAR_BIND_EXISTS(1504,"车辆已经被绑定，请勿重复绑定"),
 
+    CITY_DRIVER_EMPTY(1505,"当前城市没有可用的司机"),
+
     TOKEN_ERROR(1199,"token 错误"),
 
     ORDER_GOING_ON(1600,"有正在进行的订单"),
