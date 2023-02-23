@@ -75,6 +75,8 @@ public class ForceCastPriceService {
         forceCastPriceResponse.setPrice(price);
         forceCastPriceResponse.setCityCode(cityCode);
         forceCastPriceResponse.setVehicleType(vehicleType);
+        forceCastPriceResponse.setFareVersion(priceRule.getFareVersion());
+        forceCastPriceResponse.setFareType(priceRule.getFareType());
         return ResponseResult.success(forceCastPriceResponse);
     }
 

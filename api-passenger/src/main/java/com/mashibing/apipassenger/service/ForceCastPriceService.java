@@ -30,12 +30,7 @@ public class ForceCastPriceService {
         forceCastPriceDTO.setCityCode(cityCode);
         forceCastPriceDTO.setVehicleType(vehicleType);
         ResponseResult<ForceCastPriceResponse> forecast = servicePriceClient.forecast(forceCastPriceDTO);
-        double price = forecast.getData().getPrice();
-        //调用计价服务，计算价格
-        ForceCastPriceResponse forceCastPriceResponse = new ForceCastPriceResponse();
-        forceCastPriceResponse.setPrice(price);
-        forceCastPriceResponse.setCityCode(cityCode);
-        forceCastPriceResponse.setVehicleType(vehicleType);
-        return ResponseResult.success(forceCastPriceResponse);
+
+        return ResponseResult.success(forecast.getData());
     }
 }

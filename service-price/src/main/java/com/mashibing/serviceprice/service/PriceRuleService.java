@@ -8,6 +8,7 @@ import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.serviceprice.mapper.PriceRuleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +89,37 @@ public class PriceRuleService {
 
         priceRuleMapper.insert(priceRule);
         return ResponseResult.success("");
+    }
+
+    /**
+     * 查询最新的计价规则
+     * @param fareType
+     * @return
+     */
+    public ResponseResult<PriceRule> getNewestVersion(String fareType ){
+        QueryWrapper<PriceRule> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("fare_type",fareType);
+        queryWrapper.orderByDesc("fare_version");
+        List<PriceRule> priceRules = priceRuleMapper.selectList(queryWrapper);
+        if (priceRules.size() > 0) {
+            return ResponseResult.success(priceRules.get(0));
+        }else {
+            return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_EMPTY.getCode(),CommonStatusEnum.PRICE_RULE_EMPTY.getValue());
+        }
+    }
+
+    public ResponseResult<Boolean> isNew(String fareType,Integer fareVersion){
+        ResponseResult<PriceRule> newestVersionPriceRule = getNewestVersion(fareType);
+        if (newestVersionPriceRule.getCode() == CommonStatusEnum.PRICE_RULE_EMPTY.getCode()) {
+            return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_EMPTY.getCode(),CommonStatusEnum.PRICE_RULE_EMPTY.getValue());
+        }
+        PriceRule priceRule = newestVersionPriceRule.getData();
+        Integer fareVersionDB = priceRule.getFareVersion();
+        if (fareVersionDB > fareVersion) {
+            return ResponseResult.success(false);
+        }else {
+            return ResponseResult.success(true);
+        }
     }
 
 }
