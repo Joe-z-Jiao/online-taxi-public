@@ -31,6 +31,8 @@ public enum CommonStatusEnum {
     TOKEN_ERROR(1199,"token 错误"),
 
     ORDER_GOING_ON(1600,"有正在进行的订单"),
+
+    DEVICE_IS_BLACK(1601,"该设备超过下单次数"),
     SUCCESS(1,"SUCCESS"),
     FAIL(0,"FAIL ")
     ;

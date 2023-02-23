@@ -1,6 +1,7 @@
 package com.mashibing.serviceorder.controller;
 
 
+import com.mashibing.internalcommon.constant.HeaderParamConstants;
 import com.mashibing.internalcommon.dto.OrderInfo;
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.request.OrderRequest;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -31,7 +34,10 @@ public class OrderInfoController {
     private OrderInfoService orderInfoService;
 
     @RequestMapping("/add")
-    public ResponseResult add(@RequestBody OrderRequest orderRequest) {
+    public ResponseResult add(@RequestBody OrderRequest orderRequest, HttpServletRequest httpServletRequest) {
+        //测试通过，通过header获取deviceCode
+//        String deviceCode = httpServletRequest.getHeader(HeaderParamConstants.DEVICE_CODE);
+//        orderRequest.setDeviceCode(deviceCode);
         return orderInfoService.add(orderRequest);
     }
 
