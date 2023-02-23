@@ -2,8 +2,21 @@ package com.mashibing.internalcommon.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author zhourj
+ * @since 2023-02-23
+ */
 @Data
-public class PriceRule {
+public class PriceRule implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     /**
      * 城市代码
      */
@@ -19,28 +32,14 @@ public class PriceRule {
      */
     private Double startFare;
 
-    /**
-     * 起步里程
-     */
     private Integer startMile;
 
-    /**
-     * 单位距离价格（千米）
-     */
     private Double unitPricePerMile;
 
-    /**
-     * 单位时长价格（分钟）
-     */
     private Double unitPricePerMinute;
 
-    /**
-     * 版本，默认1，修改往上增。
-     */
     private Integer fareVersion;
 
-    /**
-     * 运价类型编码
-     */
     private String fareType;
+
 }
