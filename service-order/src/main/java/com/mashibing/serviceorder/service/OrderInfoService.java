@@ -56,9 +56,9 @@ public class OrderInfoService {
     public ResponseResult add(OrderRequest orderRequest) {
         //测试当前城市是否有司机
         ResponseResult<Boolean> availableDriver = serviceDriverUserClient.isAvailableDriver(orderRequest.getAddress());
-        log.info("测试城市是否有司机结果：" + availableDriver.getData() );
+        log.info("测试城市是否有司机结果：" + availableDriver.getData());
         if (!availableDriver.getData()) {
-            return ResponseResult.fail(CommonStatusEnum.CITY_DRIVER_EMPTY.getCode(),CommonStatusEnum.CITY_DRIVER_EMPTY.getValue(),"");
+            return ResponseResult.fail(CommonStatusEnum.CITY_DRIVER_EMPTY.getCode(), CommonStatusEnum.CITY_DRIVER_EMPTY.getValue(), "");
         }
 
         PriceRuleIsNewRequest priceRuleIsNewRequest = new PriceRuleIsNewRequest();
@@ -76,8 +76,8 @@ public class OrderInfoService {
             return ResponseResult.fail(CommonStatusEnum.DEVICE_IS_BLACK.getCode(), CommonStatusEnum.DEVICE_IS_BLACK.getValue(), "");
         }
         //判断下单的城市和计价规则是否正常
-        if (!isPriceRuleExists(orderRequest)){
-            return ResponseResult.fail(CommonStatusEnum.CITY_SERVICE_NOT_SERVICE.getCode(),CommonStatusEnum.CITY_SERVICE_NOT_SERVICE.getValue());
+        if (!isPriceRuleExists(orderRequest)) {
+            return ResponseResult.fail(CommonStatusEnum.CITY_SERVICE_NOT_SERVICE.getCode(), CommonStatusEnum.CITY_SERVICE_NOT_SERVICE.getValue());
         }
 
         //判断乘客是否有正在进行的订单
@@ -100,11 +100,13 @@ public class OrderInfoService {
 
         return ResponseResult.success("");
     }
+
     @Autowired
     private ServiceMapClient serviceMapClient;
 
     /**
      * 实时订单派单逻辑
+     *
      * @param orderInfo
      */
     public void dispatchRealTimeOrder(OrderInfo orderInfo) {
@@ -119,29 +121,28 @@ public class OrderInfoService {
         //搜索结果
         //goto 为了测试
         radius:
-        for (int i = 0; i < radiusList.size(); i++ ) {
+        for (int i = 0; i < radiusList.size(); i++) {
             Integer radius = radiusList.get(i);
             listResponseResult = serviceMapClient.terminalAroundSearch(center, radius);
 
-            log.info("在半径为" + radius + "的范围内，寻找车辆"+"结果为："
+            log.info("在半径为" + radius + "的范围内，寻找车辆" + "结果为："
                     + JSONArray.fromObject(listResponseResult.getData()).toString());
             // 获得终端 [{"carId":1626467262537736194,"tid":"636564420"}]
 
             // 解析终端
-            JSONArray result = JSONArray.fromObject(listResponseResult.getData());
-            for (int j = 0; j < result.size(); j++ ){
-                JSONObject jsonObject = result.getJSONObject(j);
-                String carIdString = jsonObject.getString("carId");
-                Long carId = Long.parseLong(carIdString);
-                long longitude = jsonObject.getLong("longitude");
-                long latitude = jsonObject.getLong("latitude");
+            List<TerminalResponse> data = listResponseResult.getData();
+            for (int j = 0; j < data.size(); j++) {
+                TerminalResponse terminalResponse = data.get(j);
+                Long carId = terminalResponse.getCarId();
+                String longitude = terminalResponse.getLongitude();
+                String latitude = terminalResponse.getLatitude();
                 //查询是否有可派单的司机
                 ResponseResult<OrderDriverRespose> availableDriver = serviceDriverUserClient.getAvailableDriver(carId);
                 if (availableDriver.getCode() == CommonStatusEnum.CITY_DRIVER_EMPTY.getCode()) {
-                    log.info("没有车辆 ID"+carId+"对应的司机");
+                    log.info("没有车辆 ID" + carId + "对应的司机");
                     continue radius;
                 } else {
-                    log.info("车辆 ID：" + carId+"找到了正在出车的司机");
+                    log.info("车辆 ID：" + carId + "找到了正在出车的司机");
                     OrderDriverRespose orderDriverRespose = availableDriver.getData();
                     Long driverId = orderDriverRespose.getDriverId();
                     String driverPhone = orderDriverRespose.getDriverPhone();
@@ -156,8 +157,8 @@ public class OrderInfoService {
                     orderInfo.setDriverPhone(driverPhone);
                     orderInfo.setCarId(carId);
                     //从地图中来
-                    orderInfo.setReceiveOrderCarLongitude(longitude+"");
-                    orderInfo.setReceiveOrderCarLatitude(latitude+"");
+                    orderInfo.setReceiveOrderCarLongitude(longitude);
+                    orderInfo.setReceiveOrderCarLatitude(latitude);
                     orderInfo.setReceiveOrderTime(LocalDateTime.now());
                     orderInfo.setLicenseId(licenseId);
                     orderInfo.setVehicleNo(vehicleNo);
@@ -180,6 +181,7 @@ public class OrderInfoService {
 
     /**
      * 判断是否有计价规则
+     *
      * @param orderRequest
      * @return
      */
@@ -198,6 +200,7 @@ public class OrderInfoService {
 
     /**
      * 判断是否为黑名单用户
+     *
      * @param orderRequest
      * @return
      */
@@ -269,7 +272,7 @@ public class OrderInfoService {
 
 
         Integer integer = orderInfoMapper.selectCount(queryWrapper);
-        log.info("司机id"+driverId+",正在进行的订单的数量："+integer);
+        log.info("司机id" + driverId + ",正在进行的订单的数量：" + integer);
         return integer;
     }
 
