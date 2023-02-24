@@ -118,9 +118,15 @@ public class OrderInfoService {
 
             log.info("在半径为" + radius + "的范围内，寻找车辆"+"结果为："
                     + JSONArray.fromObject(listResponseResult.getData()).toString());
-            // 获得终端
+            // 获得终端 [{"carId":1626467262537736194,"tid":"636564420"}]
 
             // 解析终端
+            JSONArray result = JSONArray.fromObject(listResponseResult.getData());
+            for (int j = 0; j < result.size(); j++ ){
+                JSONObject jsonObject = result.getJSONObject(j);
+                String carIdString = jsonObject.getString("carId");
+                Long carId = Long.parseLong(carIdString);
+            }
 
             // 根据解析出来的终端，查询车辆信息
 

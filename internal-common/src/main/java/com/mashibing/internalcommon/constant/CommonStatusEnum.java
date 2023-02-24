@@ -30,6 +30,8 @@ public enum CommonStatusEnum {
 
     CITY_DRIVER_EMPTY(1505,"当前城市没有可用的司机"),
 
+    AVAILABLE_DRIVER_EMPTY(1506,"可用的司机为空"),
+
     TOKEN_ERROR(1199,"token 错误"),
 
     ORDER_GOING_ON(1600,"有正在进行的订单"),

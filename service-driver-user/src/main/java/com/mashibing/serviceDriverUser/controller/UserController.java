@@ -4,6 +4,7 @@ import com.mashibing.internalcommon.constant.DriverCarConstants;
 import com.mashibing.internalcommon.dto.DriverUser;
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.response.DriverUserResponse;
+import com.mashibing.internalcommon.response.OrderDriverRespose;
 import com.mashibing.serviceDriverUser.service.DriverUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -59,5 +60,15 @@ public class UserController {
 
 
         return ResponseResult.success(driverUserResponse);
+    }
+
+    /**
+     * 根据车辆 ID 查询订单所需要的司机
+     * @param carId
+     * @return
+     */
+    @GetMapping("/get-available-driver/{carId}")
+    public ResponseResult<OrderDriverRespose> getAvailableDriver(@PathVariable("carId") Long carId){
+        return driverUserService.getAvailableDriver(carId);
     }
 }
