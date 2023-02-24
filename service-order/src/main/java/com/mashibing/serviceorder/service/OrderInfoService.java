@@ -15,6 +15,8 @@ import com.mashibing.serviceorder.remote.ServiceMapClient;
 import com.mashibing.serviceorder.remote.ServicePriceClient;
 import com.mashibing.serviceorder.remote.ServiceDriverUserClient;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -114,7 +116,8 @@ public class OrderInfoService {
             Integer radius = radiusList.get(i);
             listResponseResult = serviceMapClient.terminalAroundSearch(center, radius);
 
-            log.info("在半径为" + radius + "的范围内，寻找车辆");
+            log.info("在半径为" + radius + "的范围内，寻找车辆"+"结果为："
+                    + JSONArray.fromObject(listResponseResult.getData()).toString());
             // 获得终端
 
             // 解析终端

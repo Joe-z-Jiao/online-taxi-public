@@ -79,7 +79,8 @@ public class TerminaClient {
         for (int i = 0; i< results.size(); i++ ) {
             TerminalResponse terminalResponse = new TerminalResponse();
             JSONObject jsonObject = results.getJSONObject(i);
-            long carId = jsonObject.getLong("desc");
+            String desc = jsonObject.getString("desc");
+            long carId = Long.parseLong(desc);
             String tid = jsonObject.getString("tid");
             terminalResponse.setTid(tid);
             terminalResponse.setCarId(carId);
