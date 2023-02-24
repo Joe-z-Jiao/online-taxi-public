@@ -8,8 +8,10 @@ import com.mashibing.internalcommon.dto.OrderInfo;
 import com.mashibing.internalcommon.dto.PriceRule;
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.request.OrderRequest;
+import com.mashibing.internalcommon.response.TerminalResponse;
 import com.mashibing.internalcommon.utils.RedisKeyPrefixUtils;
 import com.mashibing.serviceorder.mapper.OrderInfoMapper;
+import com.mashibing.serviceorder.remote.ServiceMapClient;
 import com.mashibing.serviceorder.remote.ServicePriceClient;
 import com.mashibing.serviceorder.remote.ServiceDriverUserClient;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -84,8 +87,36 @@ public class OrderInfoService {
         orderInfo.setGmtCreate(now);
         orderInfo.setGmtModified(now);
         orderInfoMapper.insert(orderInfo);
+        //派单
+        dispatchRealTimeOrder(orderInfo);
 
         return ResponseResult.success("");
+    }
+    @Autowired
+    private ServiceMapClient serviceMapClient;
+
+    /**
+     * 实时订单派单逻辑
+     * @param orderInfo
+     */
+    public void dispatchRealTimeOrder(OrderInfo orderInfo) {
+        String depLatitude = orderInfo.getDepLatitude();
+        String depLongitude = orderInfo.getDepLongitude();
+        int radius = 2000;
+        String center = depLatitude + "," + depLongitude;
+        ResponseResult<List<TerminalResponse>> listResponseResult = serviceMapClient.terminalAroundSearch(center, radius);
+        List<TerminalResponse> data = listResponseResult.getData();
+        if (data.size() == 0) {
+            radius = 4000;
+            listResponseResult = serviceMapClient.terminalAroundSearch(center,radius);
+            if (listResponseResult.getData().size() == 0) {
+                radius = 5000;
+                listResponseResult = serviceMapClient.terminalAroundSearch(center,radius);
+                if (listResponseResult.getData().size() == 0) {
+                    log.info("此轮派单没找到车，找了 2km,4km,5km");
+                }
+            }
+        }
     }
 
     private boolean isPriceRuleExists(OrderRequest orderRequest) {
