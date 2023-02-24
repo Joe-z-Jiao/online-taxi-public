@@ -21,6 +21,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -102,21 +103,29 @@ public class OrderInfoService {
     public void dispatchRealTimeOrder(OrderInfo orderInfo) {
         String depLatitude = orderInfo.getDepLatitude();
         String depLongitude = orderInfo.getDepLongitude();
-        int radius = 2000;
         String center = depLatitude + "," + depLongitude;
-        ResponseResult<List<TerminalResponse>> listResponseResult = serviceMapClient.terminalAroundSearch(center, radius);
-        List<TerminalResponse> data = listResponseResult.getData();
-        if (data.size() == 0) {
-            radius = 4000;
-            listResponseResult = serviceMapClient.terminalAroundSearch(center,radius);
-            if (listResponseResult.getData().size() == 0) {
-                radius = 5000;
-                listResponseResult = serviceMapClient.terminalAroundSearch(center,radius);
-                if (listResponseResult.getData().size() == 0) {
-                    log.info("此轮派单没找到车，找了 2km,4km,5km");
-                }
-            }
+        ResponseResult<List<TerminalResponse>> listResponseResult = null;
+        List<Integer> radiusList = new ArrayList<>();
+        radiusList.add(2000);
+        radiusList.add(4000);
+        radiusList.add(5000);
+        //搜索结果
+        for (int i = 0; i < radiusList.size(); i++ ) {
+            Integer radius = radiusList.get(i);
+            listResponseResult = serviceMapClient.terminalAroundSearch(center, radius);
+
+            log.info("在半径为" + radius + "的范围内，寻找车辆");
+            // 获得终端
+
+            // 解析终端
+
+            // 根据解析出来的终端，查询车辆信息
+
+            // 找到符合的车辆，进行派单
+
+            // 如果派单成功，则退出循环
         }
+
     }
 
     private boolean isPriceRuleExists(OrderRequest orderRequest) {
