@@ -133,6 +133,8 @@ public class OrderInfoService {
                 JSONObject jsonObject = result.getJSONObject(j);
                 String carIdString = jsonObject.getString("carId");
                 Long carId = Long.parseLong(carIdString);
+                long longitude = jsonObject.getLong("longitude");
+                long latitude = jsonObject.getLong("latitude");
                 //查询是否有可派单的司机
                 ResponseResult<OrderDriverRespose> availableDriver = serviceDriverUserClient.getAvailableDriver(carId);
                 if (availableDriver.getCode() == CommonStatusEnum.CITY_DRIVER_EMPTY.getCode()) {
@@ -142,10 +144,26 @@ public class OrderInfoService {
                     log.info("车辆 ID：" + carId+"找到了正在出车的司机");
                     OrderDriverRespose orderDriverRespose = availableDriver.getData();
                     Long driverId = orderDriverRespose.getDriverId();
+                    String driverPhone = orderDriverRespose.getDriverPhone();
+                    String licenseId = orderDriverRespose.getLicenseId();
+                    String vehicleNo = orderDriverRespose.getVehicleNo();
                     //判断司机是否有正在进行的订单
                     if (isDriverOrderGoingOn(driverId) > 0) {
                         continue;
                     }
+                    //订单直接匹配司机
+                    orderInfo.setDriverId(driverId);
+                    orderInfo.setDriverPhone(driverPhone);
+                    orderInfo.setCarId(carId);
+                    //从地图中来
+                    orderInfo.setReceiveOrderCarLongitude(longitude+"");
+                    orderInfo.setReceiveOrderCarLatitude(latitude+"");
+                    orderInfo.setReceiveOrderTime(LocalDateTime.now());
+                    orderInfo.setLicenseId(licenseId);
+                    orderInfo.setVehicleNo(vehicleNo);
+                    orderInfo.setOrderStatus(OrderConstants.DRIVER_RECEIVE_ORDER);
+                    orderInfoMapper.updateById(orderInfo);
+
                     //退出，不再进行司机的查找
                     break radius;
                 }
@@ -160,6 +178,11 @@ public class OrderInfoService {
 
     }
 
+    /**
+     * 判断是否有计价规则
+     * @param orderRequest
+     * @return
+     */
     private boolean isPriceRuleExists(OrderRequest orderRequest) {
         String fareType = orderRequest.getFareType();
         int index = fareType.indexOf("$");
@@ -173,7 +196,11 @@ public class OrderInfoService {
         return booleanResponseResult.getData();
     }
 
-
+    /**
+     * 判断是否为黑名单用户
+     * @param orderRequest
+     * @return
+     */
     private boolean isBlackDevice(OrderRequest orderRequest) {
         String deviceCode = orderRequest.getDeviceCode();
         //生成key

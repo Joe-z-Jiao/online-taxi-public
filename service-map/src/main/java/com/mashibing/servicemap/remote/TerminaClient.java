@@ -79,11 +79,18 @@ public class TerminaClient {
         for (int i = 0; i< results.size(); i++ ) {
             TerminalResponse terminalResponse = new TerminalResponse();
             JSONObject jsonObject = results.getJSONObject(i);
+            //desc是carId
             String desc = jsonObject.getString("desc");
             long carId = Long.parseLong(desc);
             String tid = jsonObject.getString("tid");
+            JSONObject location = jsonObject.getJSONObject("location");
+            long longitude = location.getLong("longitude");
+            long latitude = location.getLong("latitude");
+
             terminalResponse.setTid(tid);
             terminalResponse.setCarId(carId);
+            terminalResponse.setLatitude(latitude);
+            terminalResponse.setLongitude(longitude);
             terminalResponseList.add(terminalResponse);
         }
         return ResponseResult.success(terminalResponseList);
