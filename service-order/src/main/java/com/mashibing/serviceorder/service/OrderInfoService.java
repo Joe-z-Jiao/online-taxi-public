@@ -401,4 +401,26 @@ public class OrderInfoService {
 
         return ResponseResult.success("");
     }
+
+    /**
+     * 乘客下车，到达行程终点
+     * @param orderRequest
+     * @return
+     */
+    public ResponseResult passenger_getoff(@RequestBody OrderRequest orderRequest) {
+        Long orderId = orderRequest.getOrderId();
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", orderId);
+        OrderInfo orderInfo = orderInfoMapper.selectOne(queryWrapper);
+
+        orderInfo.setPassengerGetoffLatitude(orderRequest.getPassengerGetoffLatitude());
+        orderInfo.setPassengerGetoffLongitude(orderRequest.getPassengerGetoffLongitude());
+        orderInfo.setPassengerGetoffTime(LocalDateTime.now());
+
+        orderInfo.setOrderStatus(OrderConstants.PASSENGER_GETOFF);
+        //订单行驶路程和时间
+
+        orderInfoMapper.updateById(orderInfo);
+        return ResponseResult.success("");
+    }
 }

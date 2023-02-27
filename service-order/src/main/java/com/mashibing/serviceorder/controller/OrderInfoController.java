@@ -52,14 +52,29 @@ public class OrderInfoController {
         return orderInfoService.toPickUpPassenger(orderRequest);
     }
 
-@PostMapping("/arrived-depature")
+    /**
+     * 司机到达目的地
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/arrived-depature")
     public ResponseResult arrivedDeparture(@RequestBody OrderRequest orderRequest){
         return orderInfoService.arrivedDeparture(orderRequest);
     }
 
-    @PostMapping("/pick_up_passenger")
+    /**
+     * 司机接到乘客
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/pick-up-passenger")
     public ResponseResult PickUpPassenger(@RequestBody OrderRequest orderRequest){
         return orderInfoService.PickUpPassenger(orderRequest);
+    }
+
+    @PostMapping("/passenger-getoff")
+    public ResponseResult passenger_getoff(@RequestBody OrderRequest orderRequest) {
+        return orderInfoService.passenger_getoff(orderRequest);
     }
 
     @RequestMapping("/test")
