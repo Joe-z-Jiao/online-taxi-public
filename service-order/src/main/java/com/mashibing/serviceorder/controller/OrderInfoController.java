@@ -57,6 +57,11 @@ public class OrderInfoController {
         return orderInfoService.arrivedDeparture(orderRequest);
     }
 
+    @PostMapping("/pick_up_passenger")
+    public ResponseResult PickUpPassenger(@RequestBody OrderRequest orderRequest){
+        return orderInfoService.PickUpPassenger(orderRequest);
+    }
+
     @RequestMapping("/test")
     public String testMapper(){
         return orderInfoService.testMapper();

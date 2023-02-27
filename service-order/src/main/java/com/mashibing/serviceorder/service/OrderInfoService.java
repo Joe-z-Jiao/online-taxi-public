@@ -380,6 +380,25 @@ public class OrderInfoService {
         orderInfo.setDriverArrivedDepartureTime(LocalDateTime.now());
         orderInfoMapper.updateById(orderInfo);
         return ResponseResult.success();
+    }
 
+    /**
+     * 司机接到乘客
+     * @param orderRequest
+     * @return
+     */
+    public ResponseResult PickUpPassenger(@RequestBody OrderRequest orderRequest) {
+        Long orderId = orderRequest.getOrderId();
+        QueryWrapper<OrderInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", orderId);
+        OrderInfo orderInfo = orderInfoMapper.selectOne(queryWrapper);
+
+        orderInfo.setPickUpPassengerLongitude(orderRequest.getPickUpPassengerLongitude());
+        orderInfo.setPickUpPassengerLatitude(orderRequest.getPickUpPassengerLatitude());
+        orderInfo.setPickUpPassengerTime(LocalDateTime.now());
+        orderInfo.setOrderStatus(OrderConstants.PICK_UP_PASSENGER);
+        orderInfoMapper.updateById(orderInfo);
+
+        return ResponseResult.success("");
     }
 }
