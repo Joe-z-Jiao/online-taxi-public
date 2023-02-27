@@ -3,6 +3,7 @@ package com.mashibing.serviceorder.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mashibing.internalcommon.constant.CommonStatusEnum;
+import com.mashibing.internalcommon.constant.IdentityConstant;
 import com.mashibing.internalcommon.constant.OrderConstants;
 import com.mashibing.internalcommon.dto.OrderInfo;
 import com.mashibing.internalcommon.dto.PriceRule;
@@ -16,6 +17,7 @@ import com.mashibing.serviceorder.mapper.OrderInfoMapper;
 import com.mashibing.serviceorder.remote.ServiceMapClient;
 import com.mashibing.serviceorder.remote.ServicePriceClient;
 import com.mashibing.serviceorder.remote.ServiceDriverUserClient;
+import com.mashibing.serviceorder.remote.ServiceSsePushClient;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -54,6 +56,9 @@ public class OrderInfoService {
 
     @Autowired
     private ServiceDriverUserClient serviceDriverUserClient;
+
+    @Autowired
+    private ServiceSsePushClient serviceSsePushClient;
 
     public ResponseResult add(OrderRequest orderRequest) {
         //测试当前城市是否有司机
@@ -174,6 +179,20 @@ public class OrderInfoService {
                     orderInfo.setVehicleNo(vehicleNo);
                     orderInfo.setOrderStatus(OrderConstants.DRIVER_RECEIVE_ORDER);
                     orderInfoMapper.updateById(orderInfo);
+
+                    JSONObject driverContent = new JSONObject();
+                    driverContent.put("passenegerId",orderInfo.getPassengerId());
+                    driverContent.put("passengerPhone",orderInfo.getPassengerPhone());
+                    driverContent.put("departure",orderInfo.getDeparture());
+                    driverContent.put("depLongitude",orderInfo.getDepLongitude());
+                    driverContent.put("depLatitude",orderInfo.getDepLatitude());
+
+                    driverContent.put("destination",orderInfo.getDestination());
+                    driverContent.put("destLongitude",orderInfo.getDestLongitude());
+                    driverContent.put("destLatitude",orderInfo.getDestLatitude());
+                    //通知司机
+                    serviceSsePushClient.push(driverId, IdentityConstant.DRIVER_IDENTITY,driverContent.toString());
+
                     lock.unlock();
                     //退出，不再进行司机的查找
                     break radius;
