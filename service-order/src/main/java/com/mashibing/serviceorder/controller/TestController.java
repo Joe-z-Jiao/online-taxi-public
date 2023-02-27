@@ -25,6 +25,7 @@ public class TestController {
 
     @GetMapping("/test-real-time-order/{orderId}")
     public String dispatchRealTimeOrder(@PathVariable("orderId") long orderId) {
+        System.out.println("并发测试：orderId："+ orderId);
         OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
         orderInfoService.dispatchRealTimeOrder(orderInfo);
         return "test-real-time-order success";
