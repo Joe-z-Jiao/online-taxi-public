@@ -103,8 +103,21 @@ public class OrderInfoService {
         orderInfo.setGmtCreate(now);
         orderInfo.setGmtModified(now);
         orderInfoMapper.insert(orderInfo);
-        //派单
-        dispatchRealTimeOrder(orderInfo);
+
+
+        //处理定时任务
+        for (int i = 0; i < 6; i++) {
+            //派单
+            int result = dispatchRealTimeOrder(orderInfo);
+            if (result == 1) {
+                break;
+            }
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         return ResponseResult.success("");
     }
@@ -117,10 +130,12 @@ public class OrderInfoService {
 
     /**
      * 实时订单派单逻辑
-     *
+     * 如果返回 1，则派单成功
      * @param orderInfo
      */
-    public synchronized void dispatchRealTimeOrder(OrderInfo orderInfo) {
+    public int dispatchRealTimeOrder(OrderInfo orderInfo) {
+        log.info("循环一次");
+        int result = 0;
         String depLatitude = orderInfo.getDepLatitude();
         String depLongitude = orderInfo.getDepLongitude();
         String center = depLatitude + "," + depLongitude;
@@ -211,7 +226,7 @@ public class OrderInfoService {
                     passengerContent.put("receiveOrderCarLongitude",orderInfo.getReceiveOrderCarLongitude());
                     passengerContent.put("receiveOrderCarLatitude",orderInfo.getReceiveOrderCarLatitude());
                     serviceSsePushClient.push(orderInfo.getPassengerId(), IdentityConstant.PASSENGER_IDENTITY,passengerContent.toString());
-
+                    result = 1;
                     lock.unlock();
                     //退出，不再进行司机的查找
                     break radius;
@@ -227,7 +242,7 @@ public class OrderInfoService {
 
             // 如果派单成功，则退出循环
         }
-
+        return result;
     }
 
     /**
