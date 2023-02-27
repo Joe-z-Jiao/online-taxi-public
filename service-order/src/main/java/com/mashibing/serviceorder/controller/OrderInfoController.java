@@ -52,6 +52,11 @@ public class OrderInfoController {
         return orderInfoService.toPickUpPassenger(orderRequest);
     }
 
+@PostMapping("/arrived-depature")
+    public ResponseResult arrivedDeparture(@RequestBody OrderRequest orderRequest){
+        return orderInfoService.arrivedDeparture(orderRequest);
+    }
+
     @RequestMapping("/test")
     public String testMapper(){
         return orderInfoService.testMapper();
