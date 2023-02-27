@@ -6,5 +6,40 @@
 </head>
 <body>
 <h1>司机监听测试页面-模拟司机客户端</h1>
+
+<button onclick="setMessageContent('鼠标点我了')">测试 message 展示</button>
+<div id="message">展示服务推送过来消息的地方<br/></div>
+
+<button onclick="sourceClose()">关闭连接</button>
+<script>
+    driverId = 1;
+    source = null;
+    if(window.EventSource) {
+        console.info("此浏览器支持sse");
+        //建立连接
+        source = new EventSource("http://localhost:9000/connect/" + driverId);
+        //监听服务器推送的内容
+        source.addEventListener("message",function (e){
+            content = e.data;
+            console.info("消息内容是：" + content);
+            setMessageContent(content);
+        });
+    } else {
+        setMessageContent("此浏览器不支持");
+    }
+    function setMessageContent(content){
+        document.getElementById("message").innerHTML+=(content+'<br/>');
+    }
+    function sourceClose(){
+        console.info("close 方法执行");
+        //消息的关闭
+        source.close();
+        //服务端map 的移除
+        httpRequest = new XMLHttpRequest();
+        httpRequest.open("get","http://localhost:9000/close/" + driverId);
+        httpRequest.send();
+
+    }
+</script>
 </body>
 </html>
