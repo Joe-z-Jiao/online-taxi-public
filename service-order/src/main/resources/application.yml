@@ -19,3 +19,13 @@ spring:
 logging:
   level:
     com.baomidou: debug
+---
+spring:
+  profiles: 8089
+server:
+  port: 8089
+---
+spring:
+  profiles: 8090
+server:
+  port: 8090
