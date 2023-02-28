@@ -7,6 +7,7 @@ import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.request.OrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
@@ -39,4 +40,13 @@ public class ApiDriverOrderInfoService {
         return serviceOrderClient.PickUpPassenger(orderRequest);
     }
 
+
+    /**
+     * 乘客下车，订单结束
+     * @param orderRequest
+     * @return
+     */
+    public ResponseResult passenger_getoff(@RequestBody OrderRequest orderRequest) {
+        return serviceOrderClient.passenger_getoff(orderRequest);
+    }
 }

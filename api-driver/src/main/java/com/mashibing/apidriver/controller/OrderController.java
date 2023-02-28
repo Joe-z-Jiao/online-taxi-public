@@ -44,4 +44,14 @@ public class OrderController {
     public ResponseResult PickUpPassenger(@RequestBody OrderRequest orderRequest){
         return apiDriverOrderInfoService.PickUpPassenger(orderRequest);
     }
+
+    /**
+     * 乘客下车，订单结束
+     * @param orderRequest
+     * @return
+     */
+    @PostMapping("/passenger-getoff")
+    public ResponseResult passenger_getoff(@RequestBody OrderRequest orderRequest) {
+        return apiDriverOrderInfoService.passenger_getoff(orderRequest);
+    }
 }
