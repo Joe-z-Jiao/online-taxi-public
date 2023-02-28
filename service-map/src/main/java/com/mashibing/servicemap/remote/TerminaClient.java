@@ -3,6 +3,7 @@ package com.mashibing.servicemap.remote;
 import com.mashibing.internalcommon.constant.AmapConfigConstants;
 import com.mashibing.internalcommon.dto.ResponseResult;
 import com.mashibing.internalcommon.response.TerminalResponse;
+import com.mashibing.internalcommon.response.TrsearchResponse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mashibing.internalcommon.dto.ResponseResult.success;
 
 @Service
 public class TerminaClient {
@@ -48,7 +51,7 @@ public class TerminaClient {
         TerminalResponse terminalResponse = new TerminalResponse();
         terminalResponse.setTid(tid);
 
-        return ResponseResult.success(terminalResponse);
+        return success(terminalResponse);
     }
 
 
@@ -93,11 +96,11 @@ public class TerminaClient {
             terminalResponse.setLongitude(longitude);
             terminalResponseList.add(terminalResponse);
         }
-        return ResponseResult.success(terminalResponseList);
+        return success(terminalResponseList);
     }
 
 
-    public ResponseResult<TerminalResponse> trsearch(String tid, Long starttime, Long endtime){
+    public ResponseResult<TrsearchResponse> trsearch(String tid, Long starttime, Long endtime){
         StringBuilder url = new StringBuilder();
         url.append(AmapConfigConstants.TERMINAL_TRSEARCH);
         url.append("?");
@@ -113,9 +116,27 @@ public class TerminaClient {
         System.out.println("高德地图查询轨迹结果请求：" + url.toString());
         ResponseEntity<String> forEntity = restTemplate.getForEntity(url.toString(), String.class);
         System.out.println("高德地图查询轨迹结果响应：" + forEntity.getBody());
-
-
-        return null;
+        JSONObject result = JSONObject.fromObject(forEntity.getBody());
+        JSONObject data = result.getJSONObject("data");
+        int counts = data.getInt("counts");
+        if (counts == 0) {
+            return null;
+        }
+        JSONArray tracks = data.getJSONArray("tracks");
+        long driveMile = 0L;
+        long driveTime = 0L;
+        for (int i =0; i < tracks.size(); i ++ ) {
+            JSONObject tracksJSONObject = tracks.getJSONObject(i);
+            long distance = tracksJSONObject.getLong("distance");
+            driveMile = driveMile + distance;
+            long time = tracksJSONObject.getLong("time");
+            time = (time)/(1000 *  60);
+            driveTime = driveTime + time;
+        }
+        TrsearchResponse trsearchResponse = new TrsearchResponse();
+        trsearchResponse.setDriveMile(driveMile);
+        trsearchResponse.setDriveTime(driveTime);
+        return ResponseResult.success(trsearchResponse);
     }
 
 }
