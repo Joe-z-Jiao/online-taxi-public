@@ -246,12 +246,6 @@ public class OrderInfoService {
 
                 }
             }
-
-            // 根据解析出来的终端，查询车辆信息
-
-            // 找到符合的车辆，进行派单
-
-            // 如果派单成功，则退出循环
         }
         return result;
     }
@@ -441,6 +435,13 @@ public class OrderInfoService {
         Long driveTime = trsearch.getData().getDriveTime();
         orderInfo.setDriveMile(driveMile);
         orderInfo.setDriveTime(driveTime);
+
+        //获取价格
+        String address = orderInfo.getAddress();
+        String vehicleType = orderInfo.getVehicleType();
+        ResponseResult<Double> doubleResponseResult = servicePriceClient.calculatePrice(driveMile.intValue(), driveTime.intValue(), address, vehicleType);
+        Double price = doubleResponseResult.getData();
+        orderInfo.setPrice(price);
         orderInfoMapper.updateById(orderInfo);
         return ResponseResult.success("");
     }

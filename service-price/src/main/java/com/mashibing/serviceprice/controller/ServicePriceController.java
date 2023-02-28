@@ -31,7 +31,7 @@ public class ServicePriceController {
     }
 
 @PostMapping("/calculate-price")
-    public ResponseResult calculatePrice(@RequestParam Integer distance,@RequestParam Integer duration, @RequestParam String cityCode,@RequestParam String vehicleType){
+    public ResponseResult<Double> calculatePrice(@RequestParam Integer distance,@RequestParam Integer duration, @RequestParam String cityCode,@RequestParam String vehicleType){
         return forceCastPriceService.calculatePrice(distance,duration,cityCode,vehicleType);
     }
 }
