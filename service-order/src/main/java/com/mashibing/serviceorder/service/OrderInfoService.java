@@ -13,6 +13,7 @@ import com.mashibing.internalcommon.request.OrderRequest;
 import com.mashibing.internalcommon.request.PriceRuleIsNewRequest;
 import com.mashibing.internalcommon.response.OrderDriverRespose;
 import com.mashibing.internalcommon.response.TerminalResponse;
+import com.mashibing.internalcommon.response.TrsearchResponse;
 import com.mashibing.internalcommon.utils.RedisKeyPrefixUtils;
 import com.mashibing.serviceorder.mapper.OrderInfoMapper;
 import com.mashibing.serviceorder.remote.ServiceMapClient;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -419,7 +421,18 @@ public class OrderInfoService {
 
         orderInfo.setOrderStatus(OrderConstants.PASSENGER_GETOFF);
         //订单行驶路程和时间
-
+        ResponseResult<Car> carById = serviceDriverUserClient.getCarById(orderInfo.getCarId());
+        long starttime = orderInfo.getPickUpPassengerTime().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        long endtime = LocalDateTime.now().toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        log.info("开始时间：" + starttime);
+        log.info("结束时间：" + endtime);
+        ResponseResult<TrsearchResponse> trsearch = serviceMapClient.trsearch(carById.getData().getTid()
+                , starttime
+                , endtime);
+        Long driveMile = trsearch.getData().getDriveMile();
+        Long driveTime = trsearch.getData().getDriveTime();
+        orderInfo.setDriveMile(driveMile);
+        orderInfo.setDriveTime(driveTime);
         orderInfoMapper.updateById(orderInfo);
         return ResponseResult.success("");
     }
