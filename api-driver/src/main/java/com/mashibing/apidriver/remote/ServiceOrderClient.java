@@ -15,4 +15,6 @@ public interface ServiceOrderClient {
 
     @RequestMapping(method = RequestMethod.POST,value = "/order/arrived-depature")
     public ResponseResult arrivedDeparture(OrderRequest orderRequest);
+    @RequestMapping(method = RequestMethod.POST,value = "/order/pick-up-passenger")
+    public ResponseResult PickUpPassenger(@RequestBody OrderRequest orderRequest);
 }
