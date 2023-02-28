@@ -53,7 +53,7 @@ public class OrderInfoController {
     }
 
     /**
-     * 司机到达目的地
+     * 司机到达乘客上车点
      * @param orderRequest
      * @return
      */
