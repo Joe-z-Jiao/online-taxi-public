@@ -21,4 +21,6 @@ public class OrderDriverRespose {
      */
     private String vehicleNo;
 
+    private String vehicleType;
+
 }

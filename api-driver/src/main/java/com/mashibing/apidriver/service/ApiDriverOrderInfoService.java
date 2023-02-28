@@ -46,7 +46,7 @@ public class ApiDriverOrderInfoService {
      * @param orderRequest
      * @return
      */
-    public ResponseResult passenger_getoff(@RequestBody OrderRequest orderRequest) {
-        return serviceOrderClient.passenger_getoff(orderRequest);
+    public ResponseResult passengerGetoff(OrderRequest orderRequest) {
+        return serviceOrderClient.passengerGetoff(orderRequest);
     }
 }

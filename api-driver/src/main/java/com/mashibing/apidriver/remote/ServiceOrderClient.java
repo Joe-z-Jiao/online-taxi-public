@@ -15,12 +15,12 @@ public interface ServiceOrderClient {
     public ResponseResult toPickUpPassenger(@RequestBody OrderRequest orderRequest);
 
     @RequestMapping(method = RequestMethod.POST, value = "/order/arrived-depature")
-    public ResponseResult arrivedDeparture(OrderRequest orderRequest);
+    public ResponseResult arrivedDeparture(@RequestBody OrderRequest orderRequest);
 
     @RequestMapping(method = RequestMethod.POST, value = "/order/pick-up-passenger")
     public ResponseResult PickUpPassenger(@RequestBody OrderRequest orderRequest);
 
     @RequestMapping(method = RequestMethod.POST, value = "/order/passenger-getoff")
-    public ResponseResult passenger_getoff(@RequestBody OrderRequest orderRequest);
+    public ResponseResult passengerGetoff(@RequestBody OrderRequest orderRequest);
 
 }

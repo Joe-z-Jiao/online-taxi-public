@@ -51,7 +51,7 @@ public class OrderController {
      * @return
      */
     @PostMapping("/passenger-getoff")
-    public ResponseResult passenger_getoff(@RequestBody OrderRequest orderRequest) {
-        return apiDriverOrderInfoService.passenger_getoff(orderRequest);
+    public ResponseResult passengerGetoff(@RequestBody OrderRequest orderRequest) {
+        return apiDriverOrderInfoService.passengerGetoff(orderRequest);
     }
 }

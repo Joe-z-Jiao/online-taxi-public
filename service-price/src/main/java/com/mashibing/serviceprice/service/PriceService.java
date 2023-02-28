@@ -20,7 +20,7 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class ForceCastPriceService {
+public class PriceService {
 
     @Autowired
     public ServiceMapClients serviceMapClients;
@@ -68,16 +68,16 @@ public class ForceCastPriceService {
         }
         PriceRule priceRule = priceResults.get(0);
 
-        //根据距离，时长和计价规则，计算价格
-        double price = getPrice(distance, duration, priceRule);
+            //根据距离，时长和计价规则，计算价格
+            double price = getPrice(distance, duration, priceRule);
 
-        ForceCastPriceResponse forceCastPriceResponse = new ForceCastPriceResponse();
-        forceCastPriceResponse.setPrice(price);
-        forceCastPriceResponse.setCityCode(cityCode);
-        forceCastPriceResponse.setVehicleType(vehicleType);
-        forceCastPriceResponse.setFareVersion(priceRule.getFareVersion());
-        forceCastPriceResponse.setFareType(priceRule.getFareType());
-        return ResponseResult.success(forceCastPriceResponse);
+            ForceCastPriceResponse forceCastPriceResponse = new ForceCastPriceResponse();
+            forceCastPriceResponse.setPrice(price);
+            forceCastPriceResponse.setCityCode(cityCode);
+            forceCastPriceResponse.setVehicleType(vehicleType);
+            forceCastPriceResponse.setFareVersion(priceRule.getFareVersion());
+            forceCastPriceResponse.setFareType(priceRule.getFareType());
+            return ResponseResult.success(forceCastPriceResponse);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ForceCastPriceService {
      * @param priceRule
      * @return
      */
-    private double getPrice(Integer distance, Integer duration, PriceRule priceRule) {
+    public double getPrice(Integer distance, Integer duration, PriceRule priceRule) {
         //起步价
         double price = 0;
         Double startFare = priceRule.getStartFare();
@@ -126,6 +126,23 @@ public class ForceCastPriceService {
         return priceBigDecimal.doubleValue();
     }
 
+
+    public ResponseResult calculatePrice( Integer distance, Integer duration,  String cityCode, String vehicleType){
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("city_code", cityCode);
+        queryWrapper.eq("vehicle_type", vehicleType);
+        queryWrapper.orderByDesc("fare_version");
+
+        List<PriceRule> priceResults = priceRuleMapper.selectList(queryWrapper);
+        if (priceResults.size() == 0) {
+            return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_EMPTY.getCode(), CommonStatusEnum.PRICE_RULE_EMPTY.getValue());
+        }
+        PriceRule priceRule = priceResults.get(0);
+
+        //根据距离，时长和计价规则，计算价格
+        double price = getPrice(distance, duration, priceRule);
+        return ResponseResult.success(price);
+    }
 
 //    public static void main(String[] args) {
 //        PriceRule priceRule = new PriceRule();
