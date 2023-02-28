@@ -22,4 +22,8 @@ public class TerminalService {
 
         return terminaClient.aroundsearch(center,radius);
     }
+
+    public ResponseResult trsearch(String tid, Long starttime, Long endtime) {
+        return terminaClient.trsearch(tid,starttime,endtime);
+    }
 }

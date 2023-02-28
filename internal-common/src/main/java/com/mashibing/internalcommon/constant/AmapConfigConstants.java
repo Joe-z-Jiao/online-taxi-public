@@ -38,6 +38,10 @@ public class AmapConfigConstants {
      * 创建轨迹
      */
     public static final String TRACK_ADD = "https://tsapi.amap.com/v1/track/trace/add";
+    /**
+     * 查询轨迹和结果(包括：路程和时长)
+     */
+    public static final String TERMINAL_TRSEARCH="https://tsapi.amap.com/v1/track/terminal/trsearch";
 
     /**
      * json key值

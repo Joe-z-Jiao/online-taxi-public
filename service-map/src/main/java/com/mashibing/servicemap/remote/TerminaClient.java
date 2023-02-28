@@ -95,4 +95,27 @@ public class TerminaClient {
         }
         return ResponseResult.success(terminalResponseList);
     }
+
+
+    public ResponseResult<TerminalResponse> trsearch(String tid, Long starttime, Long endtime){
+        StringBuilder url = new StringBuilder();
+        url.append(AmapConfigConstants.TERMINAL_TRSEARCH);
+        url.append("?");
+        url.append("key=" + amapKey);
+        url.append("&");
+        url.append("sid=" + amapSid);
+        url.append("&");
+        url.append("tid=" + tid);
+        url.append("&");
+        url.append("starttime=" + starttime);
+        url.append("&");
+        url.append("endtime=" + endtime);
+        System.out.println("高德地图查询轨迹结果请求：" + url.toString());
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(url.toString(), String.class);
+        System.out.println("高德地图查询轨迹结果响应：" + forEntity.getBody());
+
+
+        return null;
+    }
+
 }
