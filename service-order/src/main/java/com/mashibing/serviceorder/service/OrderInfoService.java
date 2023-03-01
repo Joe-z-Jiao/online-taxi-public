@@ -523,7 +523,7 @@ public class OrderInfoService {
         }
 
         if (cancelType == 0) {
-           return ResponseResult.fail(CommonStatusEnum.ORDER_CANCEL_ERROR.getCode(),CommonStatusEnum.ORDER_CANCEL_ERROR.getValue(),"");
+           return ResponseResult.fail(CommonStatusEnum.ORDER_CANCEL_ERROR.getCode(),CommonStatusEnum.ORDER_CANCEL_ERROR.getValue()," ");
         }
             orderInfo.setCancelTime(cancelTime);
             orderInfo.setCancelOperator(Integer.parseInt(identity));
