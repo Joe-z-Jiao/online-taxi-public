@@ -23,4 +23,7 @@ public interface ServiceOrderClient {
     @RequestMapping(method = RequestMethod.POST, value = "/order/cancel")
     public ResponseResult cancel(@RequestParam Long orderId, @RequestParam String identity);
 
+    @PostMapping("/order/push-pay-info")
+    public ResponseResult pushPayInfo(@RequestBody OrderRequest orderRequest);
+
 }

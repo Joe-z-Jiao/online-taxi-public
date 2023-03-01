@@ -27,6 +27,7 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -553,6 +554,14 @@ public class OrderInfoService {
             orderInfo.setCancelTypeCode(cancelTypeCode);
             orderInfo.setOrderStatus(OrderConstants.ORDER_CANCEL);
             orderInfoMapper.updateById(orderInfo);
+        return ResponseResult.success("");
+    }
+
+    public ResponseResult pushPayInfo(OrderRequest orderRequest) {
+        Long orderId = orderRequest.getOrderId();
+        OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
+        orderInfo.setOrderStatus(OrderConstants.TO_START_PAY);
+        orderInfoMapper.updateById(orderInfo);
         return ResponseResult.success("");
     }
 }

@@ -1,5 +1,6 @@
 package com.mashibing.apidriver.controller;
 
+import com.mashibing.apidriver.remote.ServiceOrderClient;
 import com.mashibing.apidriver.service.PayService;
 import com.mashibing.internalcommon.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class PayController {
      * @return
      */
     @PostMapping("/push-pay-info")
-    public ResponseResult pushPayInfo(@RequestParam String orderId,@RequestParam String price,@RequestParam Long passengerId){
+    public ResponseResult pushPayInfo(@RequestParam Long orderId,@RequestParam String price,@RequestParam Long passengerId){
         return payService.pushPayInfo(orderId,price,passengerId);
     }
 }

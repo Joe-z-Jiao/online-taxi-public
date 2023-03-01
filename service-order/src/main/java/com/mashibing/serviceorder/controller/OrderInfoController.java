@@ -82,6 +82,11 @@ public class OrderInfoController {
         return orderInfoService.passenger_getoff(orderRequest);
     }
 
+    @PostMapping("/push-pay-info")
+    public ResponseResult pushPayInfo(@RequestBody OrderRequest orderRequest){
+        return orderInfoService.pushPayInfo(orderRequest);
+    }
+
     @RequestMapping("/test")
     public String testMapper(){
         return orderInfoService.testMapper();
