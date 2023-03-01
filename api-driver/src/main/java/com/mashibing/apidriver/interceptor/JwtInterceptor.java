@@ -35,7 +35,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         }else {
             //获取拼接key
             String identity = tokenResult.getIdentity();
-            String passengerPhone = tokenResult.getPassengerPhone();
+            String passengerPhone = tokenResult.getPhone();
             String tokenKey = RedisKeyPrefixUtils.generotorTokenKey(passengerPhone, identity, TokenConstants.Access_TOKEN_TYPE);
             //从 redis 中获取 token
             String tokenRedis = stringRedisTemplate.opsForValue().get(tokenKey);

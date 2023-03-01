@@ -21,7 +21,7 @@ public class UserService {
 
         //获取到access Token
         TokenResult tokenResult = JwtUtils.checkToken(accessToken);
-        String passengerPhone = tokenResult.getPassengerPhone();
+        String passengerPhone = tokenResult.getPhone();
         log.info("手机号为："+ passengerPhone);
 
         //根据 access Token查询

@@ -26,7 +26,7 @@ public class TokenService {
             return ResponseResult.fail(CommonStatusEnum.TOKEN_ERROR.getCode(),CommonStatusEnum.TOKEN_ERROR.getValue());
         }
         String identity = tokenResult.getIdentity();
-        String passengerPhone = tokenResult.getPassengerPhone();
+        String passengerPhone = tokenResult.getPhone();
         //生成refresh Token Key
         String refreshTokenKey = RedisKeyPrefixUtils.generotorTokenKey(passengerPhone, identity, TokenConstants.Refresh_TOKEN_TYPE);
         //读取redis中的refreshToken

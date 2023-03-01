@@ -27,9 +27,9 @@ public class JwtUtils {
 
     private static final String JWT_TOKEN_TIME = "tokenTime";
 
-    public static String generatorToken(String passengerPhone,String identity,String tokenType){
+    public static String generatorToken(String phone,String identity,String tokenType){
         Map<String,String> map = new HashMap<>();
-        map.put(JWT_KEY_PHONE,passengerPhone);
+        map.put(JWT_KEY_PHONE,phone);
         map.put(JWT_KEY_IDENTITY,identity);
         map.put(JWT_TOKEN_TYPE,tokenType);
         //防止每次生成的 Token 一样
@@ -55,7 +55,7 @@ public class JwtUtils {
         String passengerPhone = verify.getClaim(JWT_KEY_PHONE).asString();
         String identity = verify.getClaim(JWT_KEY_IDENTITY).asString();
         TokenResult tokenResult = new TokenResult();
-        tokenResult.setPassengerPhone(passengerPhone);
+        tokenResult.setPhone(passengerPhone);
         tokenResult.setIdentity(identity);
         return tokenResult;
     }
@@ -79,6 +79,6 @@ public class JwtUtils {
         System.out.println("生成的 token 为： "+s);
 
         TokenResult tokenResult = parseToken(s);
-        System.out.println("解析的手机号为:" + tokenResult.getPassengerPhone() + "解析的身份认证为：" + tokenResult.getIdentity());
+        System.out.println("解析的手机号为:" + tokenResult.getPhone() + "解析的身份认证为：" + tokenResult.getIdentity());
     }
 }

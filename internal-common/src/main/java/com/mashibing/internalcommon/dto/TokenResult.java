@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class TokenResult {
-    private String passengerPhone;
+    private String phone;
 
     private String identity;
 }
