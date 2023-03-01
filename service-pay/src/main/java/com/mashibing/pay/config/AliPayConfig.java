@@ -1,4 +1,4 @@
-package com.mashibing.testalipay.config;
+package com.mashibing.pay.config;
 
 import com.alipay.easysdk.factory.Factory;
 import com.alipay.easysdk.kernel.Config;

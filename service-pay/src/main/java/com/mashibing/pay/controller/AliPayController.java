@@ -1,7 +1,6 @@
-package com.mashibing.testalipay.controller;
+package com.mashibing.pay.controller;
 
 import com.alipay.easysdk.factory.Factory;
-import com.alipay.easysdk.payment.app.models.AlipayTradeAppPayResponse;
 import com.alipay.easysdk.payment.page.models.AlipayTradePagePayResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
