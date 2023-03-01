@@ -221,6 +221,7 @@ public class OrderInfoService {
                     orderInfoMapper.updateById(orderInfo);
 
                     JSONObject driverContent = new JSONObject();
+                    driverContent.put("orderId",orderInfo.getId());
                     driverContent.put("passenegerId",orderInfo.getPassengerId());
                     driverContent.put("passengerPhone",orderInfo.getPassengerPhone());
                     driverContent.put("departure",orderInfo.getDeparture());

@@ -26,7 +26,7 @@ public class SseController {
      */
     @GetMapping("/connect")
     public SseEmitter connect(@RequestParam Long userId,@RequestParam String identity) {
-        log.info("用户 ID：" + userId + "身份Id: " + identity);
+        System.out.println("用户 ID：" + userId + "身份Id: " + identity);
         SseEmitter sseEmitter = new SseEmitter(0L);
         String sseMapKey = SsePrefixUtils.generatorSseKey(userId,identity);
         stringSseEmitterMap.put(sseMapKey, sseEmitter);
