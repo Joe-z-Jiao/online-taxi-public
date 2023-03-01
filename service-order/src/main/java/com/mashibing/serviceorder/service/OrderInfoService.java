@@ -65,6 +65,11 @@ public class OrderInfoService {
     @Autowired
     private ServiceSsePushClient serviceSsePushClient;
 
+    /**
+     * 添加订单
+     * @param orderRequest
+     * @return
+     */
     public ResponseResult add(OrderRequest orderRequest) {
         //测试当前城市是否有司机
         ResponseResult<Boolean> availableDriver = serviceDriverUserClient.isAvailableDriver(orderRequest.getAddress());
@@ -116,11 +121,18 @@ public class OrderInfoService {
             if (result == 1) {
                 break;
             }
-            try {
-                Thread.sleep(2);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            if (i == 5) {
+                //订单无效
+                orderInfo.setOrderStatus(OrderConstants.ORDER_INVALID);
+                orderInfoMapper.updateById(orderInfo);
+            } else {
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
         }
 
         return ResponseResult.success("");
@@ -348,6 +360,11 @@ public class OrderInfoService {
         return integer;
     }
 
+    /**
+     * 司机准备去接乘客
+     * @param orderRequest
+     * @return
+     */
     public ResponseResult toPickUpPassenger(OrderRequest orderRequest) {
         Long orderId = orderRequest.getOrderId();
         LocalDateTime toPickUpPassengerTime = orderRequest.getToPickUpPassengerTime();
@@ -461,7 +478,12 @@ public class OrderInfoService {
         return ResponseResult.success("");
     }
 
-
+    /**
+     * 取消订单
+     * @param orderId
+     * @param identity
+     * @return
+     */
     public ResponseResult cancel(Long orderId,String identity){
         // 查询订单当前状态
         OrderInfo orderInfo = orderInfoMapper.selectById(orderId);
